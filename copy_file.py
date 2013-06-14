@@ -19,11 +19,20 @@ def copy_file(source_dir, target_dir):
 		elif os.path.isdir(source):
 			copy_file(source, target)
 
+def getdirsize(dir):
+    size = 0L
+    for root, dirs, files in os.walk(dir):
+        size += sum([os.path.getsize(os.path.join(root, name)) for name in files])
+    return size
+    
 #定时器，每隔6小时跑一次，文件夹大小不一致就拷贝
 def timer():
 
+
 	global count
-	if (os.path.getsize(source_dir) != os.path.getsize(target_dir)) or (not os.path.exists(target_dir)):
+	print getdirsize(source_dir) 
+	print getdirsize(target_dir)
+	if (getdirsize(source_dir) != getdirsize(target_dir)) or (not os.path.exists(target_dir)):
 		copy_file(source_dir, target_dir)
 		print count
 		count += 1
